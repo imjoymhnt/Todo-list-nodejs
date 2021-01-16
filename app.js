@@ -11,7 +11,13 @@ const items = [];
 
 app.get("/", (req, res) => {
   const day = date.getDate();
-  res.render("list", { listTitle: day });
+  res.render("list", { listTitle: day, items });
+});
+
+app.post("/", (req, res) => {
+  const item = req.body.todo;
+  items.push(item);
+  res.redirect("/");
 });
 
 app.listen(3000, () => {
