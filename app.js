@@ -31,6 +31,10 @@ app.get("/work", (req, res) => {
   res.render("list", { listTitle: "Work List", items: workItems });
 });
 
+app.get("/about", (req, res) => {
+  res.render("about");
+});
+
 app.listen(3000, () => {
   console.log("Listening to the port 3000");
 });
