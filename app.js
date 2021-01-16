@@ -17,18 +17,17 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   const item = req.body.todo;
-  items.push(item);
-  res.redirect("/");
+  if (req.body.list === "Work List") {
+    workItems.push(item);
+    res.redirect("/work");
+  } else {
+    items.push(item);
+    res.redirect("/");
+  }
 });
 
 app.get("/work", (req, res) => {
   res.render("list", { listTitle: "Work List", items: workItems });
-});
-
-app.post("/work", (req, res) => {
-  const item = req.body.todo;
-  workItems.push(item);
-  res.redirect("/work");
 });
 
 app.listen(3000, () => {
