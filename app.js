@@ -32,27 +32,36 @@ const item3 = new Item({
   name: "Sleep",
 });
 
-Item.insertMany([item1, item2, item3], (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Success");
-  }
-});
+const defaultItems = [item1, item2, item3];
 
 app.get("/", (req, res) => {
-  res.render("list", { listTitle: "Title", items: items });
+  Item.find((err, foundItems) => {
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundItems.length === 0) {
+        Item.insertMany(defaultItems, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Success");
+          }
+          res.redirect("/");
+        });
+      } else {
+        res.render("list", { listTitle: "Today", items: foundItems });
+      }
+    }
+  });
 });
 
 app.post("/", (req, res) => {
-  const item = req.body.todo;
-  if (req.body.list === "Work List") {
-    workItems.push(item);
-    res.redirect("/work");
-  } else {
-    items.push(item);
-    res.redirect("/");
-  }
+  const itemName = req.body.todo;
+  const item = new Item({
+    name: itemName,
+  });
+  item.save();
+  res.redirect("/");
 });
 
 app.get("/work", (req, res) => {
