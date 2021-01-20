@@ -4,14 +4,27 @@
 </div>
 <div class="box">
   <% items.forEach((ele) => { %>
-  <div class="item">
-    <input type="checkbox" />
-    <p><%= ele.name %></p>
-  </div>
+  <form action="/delete" method="post">
+    <div class="item">
+      <input
+        type="checkbox"
+        name="check"
+        value="<%= ele._id %>"
+        onclick="this.form.submit()"
+      />
+      <p><%= ele.name %></p>
+    </div>
+  </form>
   <% }) %>
 
   <form class="item" action="/" method="POST">
-    <input type="text" placeholder="New Item" name="todo" autocomplete="off" />
+    <input
+      type="text"
+      placeholder="New Item"
+      name="todo"
+      autocomplete="off"
+      autofocus
+    />
     <button type="submit" name="list" value="<%=listTitle%>">+</button>
   </form>
 </div>
