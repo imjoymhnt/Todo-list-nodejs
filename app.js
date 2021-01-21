@@ -90,11 +90,20 @@ app.get("/:customListName", (req, res) => {
 
 app.post("/", (req, res) => {
   const itemName = req.body.todo;
+  const listName = req.body.list;
   const item = new Item({
     name: itemName,
   });
-  item.save();
-  res.redirect("/");
+  if (listName === "Today") {
+    item.save();
+    res.redirect("/");
+  } else {
+    List.findOne({ name: listName }, (err, foundList) => {
+      foundList.items.push(item);
+      foundList.save();
+      res.redirect("/" + listName);
+    });
+  }
 });
 
 app.post("/delete", (req, res) => {
